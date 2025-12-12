@@ -346,7 +346,7 @@
     </nav>
 
     <!-- Main Content -->
-    <main class="container" style="padding: 2rem 0;">
+    <main class="container" style="padding-top: 2rem; padding-bottom: 4rem;">
         <h1 style="margin-bottom: 1rem;">Finance Manager</h1>
         <p style="color: var(--text-secondary); margin-bottom: 2rem;">Track your income, expenses, and manage your finances effectively.</p>
 
@@ -358,6 +358,7 @@
             <button class="tab-btn" data-tab="recurring">Recurring</button>
             <button class="tab-btn" data-tab="goals">Goals</button>
             <button class="tab-btn" data-tab="investments">Investments</button>
+            <button class="tab-btn" data-tab="crypto">Crypto</button>
             <button class="tab-btn" data-tab="reports">Reports</button>
         </div>
 
@@ -727,6 +728,196 @@
                     <div style="padding: 1rem; background: var(--bg-primary); border-radius: 8px;">
                         <div style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.5rem;">Return %</div>
                         <div style="font-size: 1.8rem; font-weight: 700;" id="returnPercentage">0%</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CRYPTO SECTION - PHASE 3 -->
+        <section id="crypto" class="section">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h2>Crypto Portfolio Manager</h2>
+                <button id="syncWallets" class="btn" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    🔄 Sync Wallets
+                </button>
+            </div>
+
+            <!-- WALLET MANAGEMENT -->
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>💼 Multi-Wallet Management</h3>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                    <div id="walletsList"></div>
+                </div>
+
+                <div style="border-top: 2px solid var(--border-color); padding-top: 1.5rem;">
+                    <h4 style="margin-bottom: 1rem;">Add New Wallet</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr auto; gap: 1rem; margin-bottom: 1rem;">
+                        <input type="text" id="walletName" placeholder="Wallet Name (e.g., MetaMask, Coinbase)" style="padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 6px; background: var(--bg-primary); color: var(--text-color);">
+                        <input type="text" id="walletAddress" placeholder="0x... or blockchain address" style="padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 6px; background: var(--bg-primary); color: var(--text-color);">
+                        <select id="walletChain" style="padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 6px; background: var(--bg-primary); color: var(--text-color);">
+                            <option value="ethereum">Ethereum</option>
+                            <option value="polygon">Polygon</option>
+                            <option value="bsc">BSC</option>
+                            <option value="arbitrum">Arbitrum</option>
+                            <option value="bitcoin">Bitcoin</option>
+                            <option value="solana">Solana</option>
+                        </select>
+                        <button id="addWallet" class="btn" style="background: #10b981;">➕ Add</button>
+                    </div>
+                    <div style="font-size: 0.85rem; color: var(--text-secondary);">Max 3 wallets. Connect directly via MetaMask or add address manually.</div>
+                </div>
+            </div>
+
+            <!-- PORTFOLIO OVERVIEW -->
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>📊 Portfolio Overview</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                    <div style="padding: 1rem; background: var(--bg-primary); border-radius: 8px; border-left: 4px solid #667eea;">
+                        <div style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.5rem;">Total Portfolio Value</div>
+                        <div style="font-size: 1.8rem; font-weight: 700;" id="cryptoTotalValue">$0.00</div>
+                    </div>
+                    <div style="padding: 1rem; background: var(--bg-primary); border-radius: 8px; border-left: 4px solid #10b981;">
+                        <div style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.5rem;">Total Invested</div>
+                        <div style="font-size: 1.8rem; font-weight: 700;" id="cryptoTotalInvested">$0.00</div>
+                    </div>
+                    <div style="padding: 1rem; background: var(--bg-primary); border-radius: 8px; border-left: 4px solid #f59e0b;">
+                        <div style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.5rem;">Unrealized P&L</div>
+                        <div style="font-size: 1.8rem; font-weight: 700;" id="cryptoUnrealizedPnL">$0.00</div>
+                    </div>
+                    <div style="padding: 1rem; background: var(--bg-primary); border-radius: 8px; border-left: 4px solid #8b5cf6;">
+                        <div style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.5rem;">Realized P&L</div>
+                        <div style="font-size: 1.8rem; font-weight: 700;" id="cryptoRealizedPnL">$0.00</div>
+                    </div>
+                </div>
+
+                <h4 style="margin-top: 2rem; margin-bottom: 1rem;">Holdings by Asset</h4>
+                <div id="cryptoHoldings" style="display: grid; gap: 1rem;"></div>
+            </div>
+
+            <!-- TRANSACTION TRACKING -->
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>📝 Add Crypto Transaction</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Transaction Type</label>
+                        <select id="cryptoTxType" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 6px; background: var(--bg-primary); color: var(--text-color);">
+                            <option value="buy">Buy</option>
+                            <option value="sell">Sell</option>
+                            <option value="transfer">Transfer In</option>
+                            <option value="transfer-out">Transfer Out</option>
+                            <option value="stake">Stake</option>
+                            <option value="unstake">Unstake</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Wallet</label>
+                        <select id="cryptoTxWallet" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 6px; background: var(--bg-primary); color: var(--text-color);"></select>
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Asset</label>
+                        <input type="text" id="cryptoAsset" placeholder="BTC, ETH, SOL, etc." style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 6px; background: var(--bg-primary); color: var(--text-color);">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Quantity</label>
+                        <input type="number" id="cryptoQuantity" placeholder="0.00" step="0.00000001" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 6px; background: var(--bg-primary); color: var(--text-color);">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Price per Unit</label>
+                        <input type="number" id="cryptoPrice" placeholder="0.00" step="0.01" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 6px; background: var(--bg-primary); color: var(--text-color);">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Fee ($)</label>
+                        <input type="number" id="cryptoFee" placeholder="0.00" step="0.01" value="0" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 6px; background: var(--bg-primary); color: var(--text-color);">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Date</label>
+                        <input type="datetime-local" id="cryptoTxDate" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 6px; background: var(--bg-primary); color: var(--text-color);">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Notes (Optional)</label>
+                        <input type="text" id="cryptoNotes" placeholder="DCA, swing trade, etc." style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 6px; background: var(--bg-primary); color: var(--text-color);">
+                    </div>
+                </div>
+                <button id="addCryptoTx" class="btn" style="width: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">✅ Add Transaction</button>
+            </div>
+
+            <!-- TRANSACTION HISTORY & P&L -->
+            <div class="card" style="margin-bottom: 2rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h3>📈 Transaction History & P&L</h3>
+                    <div>
+                        <input type="text" id="filterAsset" placeholder="Filter by asset..." style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 6px; background: var(--bg-primary); color: var(--text-color);">
+                    </div>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid var(--border-color);">
+                                <th style="padding: 1rem; text-align: left; color: var(--text-secondary);">Date</th>
+                                <th style="padding: 1rem; text-align: left; color: var(--text-secondary);">Wallet</th>
+                                <th style="padding: 1rem; text-align: left; color: var(--text-secondary);">Type</th>
+                                <th style="padding: 1rem; text-align: left; color: var(--text-secondary);">Asset</th>
+                                <th style="padding: 1rem; text-align: right; color: var(--text-secondary);">Qty</th>
+                                <th style="padding: 1rem; text-align: right; color: var(--text-secondary);">Price</th>
+                                <th style="padding: 1rem; text-align: right; color: var(--text-secondary);">Amount</th>
+                                <th style="padding: 1rem; text-align: right; color: var(--text-secondary);">Fee</th>
+                                <th style="padding: 1rem; text-align: right; color: var(--text-secondary);">Current Value</th>
+                                <th style="padding: 1rem; text-align: right; color: var(--text-secondary);">P&L</th>
+                                <th style="padding: 1rem; text-align: center; color: var(--text-secondary);">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cryptoTxTable"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TAX REPORTING -->
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3>📋 Tax Report</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                    <div style="padding: 1rem; background: var(--bg-primary); border-radius: 8px;">
+                        <div style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.5rem;">Short-Term Gains</div>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: #f59e0b;" id="shortTermGains">$0.00</div>
+                    </div>
+                    <div style="padding: 1rem; background: var(--bg-primary); border-radius: 8px;">
+                        <div style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.5rem;">Long-Term Gains</div>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: #10b981;" id="longTermGains">$0.00</div>
+                    </div>
+                    <div style="padding: 1rem; background: var(--bg-primary); border-radius: 8px;">
+                        <div style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.5rem;">Total Fees Paid</div>
+                        <div style="font-size: 1.5rem; font-weight: 700;" id="totalFeesPaid">$0.00</div>
+                    </div>
+                    <div style="padding: 1rem; background: var(--bg-primary); border-radius: 8px;">
+                        <div style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.5rem;">Taxable Events</div>
+                        <div style="font-size: 1.5rem; font-weight: 700;" id="taxableEvents">0</div>
+                    </div>
+                </div>
+
+                <h4 style="margin-bottom: 1rem;">Capital Gains Breakdown</h4>
+                <div id="taxReportBreakdown" style="display: grid; gap: 1rem;"></div>
+
+                <div style="margin-top: 2rem;">
+                    <button id="exportTaxReport" class="btn" style="background: #10b981; width: 100%;">📥 Export Tax Report (CSV)</button>
+                </div>
+            </div>
+
+            <!-- ADVANCED ANALYTICS -->
+            <div class="card">
+                <h3>📊 Advanced Analytics</h3>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                    <div style="padding: 1rem; background: var(--bg-primary); border-radius: 8px;">
+                        <div style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">Portfolio Allocation</div>
+                        <canvas id="allocationChart" style="max-height: 200px;"></canvas>
+                    </div>
+                    <div style="padding: 1rem; background: var(--bg-primary); border-radius: 8px;">
+                        <div style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">P&L by Asset</div>
+                        <canvas id="pnlChart" style="max-height: 200px;"></canvas>
+                    </div>
+                    <div style="padding: 1rem; background: var(--bg-primary); border-radius: 8px;">
+                        <div style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">Performance</div>
+                        <div id="performanceMetrics" style="font-size: 0.9rem;"></div>
                     </div>
                 </div>
             </div>
@@ -1442,6 +1633,459 @@
 
         // Initial UI update
         updateUI();
+
+        // ============================================
+        // CRYPTO PORTFOLIO MANAGER - PHASE 3
+        // ============================================
+
+        // Crypto Data Management
+        let cryptoWallets = JSON.parse(localStorage.getItem('cryptoWallets')) || [];
+        let cryptoTransactions = JSON.parse(localStorage.getItem('cryptoTransactions')) || [];
+        let cryptoPriceCache = JSON.parse(localStorage.getItem('cryptoPriceCache')) || {};
+
+        // Initialize crypto date inputs
+        const cryptoTxDate = document.getElementById('cryptoTxDate');
+        if (cryptoTxDate) {
+            cryptoTxDate.valueAsDate = new Date();
+        }
+
+        // CoinGecko API - Real-time Crypto Prices
+        async function fetchCryptoPrices(assets) {
+            const assetIds = {
+                'BTC': 'bitcoin', 'ETH': 'ethereum', 'SOL': 'solana', 'ADA': 'cardano',
+                'XRP': 'ripple', 'DOGE': 'dogecoin', 'AVAX': 'avalanche-2', 'MATIC': 'matic-network',
+                'LINK': 'chainlink', 'DOT': 'polkadot', 'LTC': 'litecoin', 'BCH': 'bitcoin-cash',
+                'XLM': 'stellar', 'ATOM': 'cosmos', 'NEAR': 'near', 'FTM': 'fantom',
+                'CRO': 'cronos', 'OP': 'optimism', 'ARB': 'arbitrum'
+            };
+
+            const priceData = {};
+            for (const asset of [...new Set(assets)]) {
+                const id = assetIds[asset.toUpperCase()] || asset.toLowerCase();
+                try {
+                    const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${id}&vs_currencies=usd&include_24hr_change=true`);
+                    const data = await response.json();
+                    const key = Object.keys(data)[0];
+                    if (data[key]) {
+                        priceData[asset.toUpperCase()] = {
+                            price: data[key].usd,
+                            change24h: data[key].usd_24h_change,
+                            timestamp: Date.now()
+                        };
+                    }
+                } catch (err) {
+                    console.log(`Could not fetch price for ${asset}`);
+                    if (cryptoPriceCache[asset.toUpperCase()]) {
+                        priceData[asset.toUpperCase()] = cryptoPriceCache[asset.toUpperCase()];
+                    }
+                }
+            }
+            
+            Object.assign(cryptoPriceCache, priceData);
+            localStorage.setItem('cryptoPriceCache', JSON.stringify(cryptoPriceCache));
+            return priceData;
+        }
+
+        // Format currency
+        function formatCrypto(value, decimals = 2) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: decimals,
+                maximumFractionDigits: decimals
+            }).format(value);
+        }
+
+        // Add Wallet
+        function addWallet() {
+            const name = document.getElementById('walletName').value.trim();
+            const address = document.getElementById('walletAddress').value.trim();
+            const chain = document.getElementById('walletChain').value;
+
+            if (!name || !address) {
+                alert('Please fill in wallet name and address');
+                return;
+            }
+
+            if (cryptoWallets.length >= 3) {
+                alert('Maximum 3 wallets allowed');
+                return;
+            }
+
+            cryptoWallets.push({
+                id: Date.now(),
+                name,
+                address,
+                chain,
+                createdAt: new Date().toISOString()
+            });
+
+            localStorage.setItem('cryptoWallets', JSON.stringify(cryptoWallets));
+            document.getElementById('walletName').value = '';
+            document.getElementById('walletAddress').value = '';
+            updateCryptoUI();
+        }
+
+        // Remove Wallet
+        function removeWallet(walletId) {
+            if (confirm('Remove this wallet? Transactions will be preserved.')) {
+                cryptoWallets = cryptoWallets.filter(w => w.id !== walletId);
+                localStorage.setItem('cryptoWallets', JSON.stringify(cryptoWallets));
+                updateCryptoUI();
+            }
+        }
+
+        // Add Crypto Transaction
+        function addCryptoTransaction() {
+            const type = document.getElementById('cryptoTxType').value;
+            const walletId = document.getElementById('cryptoTxWallet').value;
+            const asset = document.getElementById('cryptoAsset').value.toUpperCase().trim();
+            const quantity = parseFloat(document.getElementById('cryptoQuantity').value);
+            const price = parseFloat(document.getElementById('cryptoPrice').value);
+            const fee = parseFloat(document.getElementById('cryptoFee').value) || 0;
+            const date = document.getElementById('cryptoTxDate').value;
+            const notes = document.getElementById('cryptoNotes').value;
+
+            if (!walletId || !asset || !quantity || !price || !date) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            cryptoTransactions.push({
+                id: Date.now(),
+                type,
+                walletId,
+                asset,
+                quantity,
+                price,
+                amount: quantity * price,
+                fee,
+                totalCost: (quantity * price) + fee,
+                date,
+                notes,
+                currentPrice: null,
+                saleDate: type === 'sell' ? date : null
+            });
+
+            localStorage.setItem('cryptoTransactions', JSON.stringify(cryptoTransactions));
+            document.getElementById('cryptoAsset').value = '';
+            document.getElementById('cryptoQuantity').value = '';
+            document.getElementById('cryptoPrice').value = '';
+            document.getElementById('cryptoFee').value = '';
+            document.getElementById('cryptoNotes').value = '';
+            updateCryptoUI();
+        }
+
+        // Delete Transaction
+        function deleteCryptoTransaction(txId) {
+            if (confirm('Delete this transaction?')) {
+                cryptoTransactions = cryptoTransactions.filter(t => t.id !== txId);
+                localStorage.setItem('cryptoTransactions', JSON.stringify(cryptoTransactions));
+                updateCryptoUI();
+            }
+        }
+
+        // Calculate Holdings
+        function getHoldings() {
+            const holdings = {};
+            cryptoTransactions.forEach(tx => {
+                if (!holdings[tx.asset]) {
+                    holdings[tx.asset] = {
+                        quantity: 0,
+                        costBasis: 0,
+                        transactions: []
+                    };
+                }
+                
+                if (tx.type === 'buy' || tx.type === 'transfer') {
+                    holdings[tx.asset].quantity += tx.quantity;
+                    holdings[tx.asset].costBasis += tx.totalCost;
+                } else if (tx.type === 'sell' || tx.type === 'transfer-out') {
+                    holdings[tx.asset].quantity -= tx.quantity;
+                    holdings[tx.asset].costBasis -= (tx.quantity * tx.price);
+                }
+                holdings[tx.asset].transactions.push(tx);
+            });
+            return holdings;
+        }
+
+        // Calculate P&L
+        function calculatePnL(asset, quantity, costBasis, currentPrice) {
+            const currentValue = quantity * currentPrice;
+            const unrealizedPnL = currentValue - costBasis;
+            const percentageReturn = costBasis > 0 ? (unrealizedPnL / costBasis) * 100 : 0;
+            return { currentValue, unrealizedPnL, percentageReturn };
+        }
+
+        // Calculate Tax Report
+        function calculateTaxReport() {
+            const holdings = getHoldings();
+            let shortTermGains = 0, longTermGains = 0, totalFees = 0;
+            const reportItems = [];
+
+            cryptoTransactions.forEach(tx => {
+                if (tx.type === 'sell') {
+                    const buyTx = cryptoTransactions.find(t => 
+                        t.type === 'buy' && t.asset === tx.asset && new Date(t.date) < new Date(tx.date)
+                    );
+                    
+                    if (buyTx) {
+                        const gain = (tx.price - buyTx.price) * tx.quantity - tx.fee;
+                        const holdingDays = Math.floor((new Date(tx.date) - new Date(buyTx.date)) / (1000 * 60 * 60 * 24));
+                        const isLongTerm = holdingDays >= 365;
+
+                        if (isLongTerm) {
+                            longTermGains += gain;
+                        } else {
+                            shortTermGains += gain;
+                        }
+
+                        reportItems.push({
+                            asset: tx.asset,
+                            quantity: tx.quantity,
+                            buyPrice: buyTx.price,
+                            sellPrice: tx.price,
+                            gain,
+                            type: isLongTerm ? 'Long-Term' : 'Short-Term',
+                            holdingDays,
+                            date: tx.date
+                        });
+                    }
+                }
+                totalFees += tx.fee || 0;
+            });
+
+            return { shortTermGains, longTermGains, totalFees, reportItems };
+        }
+
+        // Sync Wallets with Real-time Data
+        async function syncWallets() {
+            const syncBtn = document.getElementById('syncWallets');
+            syncBtn.disabled = true;
+            syncBtn.textContent = '🔄 Syncing...';
+
+            const holdings = getHoldings();
+            const assets = Object.keys(holdings);
+            
+            await fetchCryptoPrices(assets);
+            updateCryptoUI();
+
+            syncBtn.disabled = false;
+            syncBtn.textContent = '🔄 Sync Wallets';
+        }
+
+        // Update Crypto UI
+        async function updateCryptoUI() {
+            // Update wallets list
+            const walletsList = document.getElementById('walletsList');
+            if (walletsList) {
+                walletsList.innerHTML = cryptoWallets.map(wallet => `
+                    <div style="padding: 1.5rem; background: var(--bg-primary); border-radius: 8px; border-left: 4px solid #667eea;">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+                            <div>
+                                <h4 style="margin: 0 0 0.25rem 0;">${wallet.name}</h4>
+                                <div style="font-size: 0.8rem; color: var(--text-secondary); word-break: break-all;">${wallet.address.substring(0, 20)}...</div>
+                                <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem; background: rgba(102, 126, 234, 0.1); padding: 0.25rem 0.5rem; border-radius: 4px; display: inline-block;">${wallet.chain}</div>
+                            </div>
+                            <button onclick="removeWallet(${wallet.id})" class="btn" style="background: #ef4444; padding: 0.5rem 1rem; font-size: 0.9rem;">✕</button>
+                        </div>
+                    </div>
+                `).join('');
+
+                // Update wallet selector
+                const walletSelect = document.getElementById('cryptoTxWallet');
+                if (walletSelect) {
+                    walletSelect.innerHTML = cryptoWallets.map(w => 
+                        `<option value="${w.id}">${w.name}</option>`
+                    ).join('');
+                }
+            }
+
+            // Get holdings and fetch prices
+            const holdings = getHoldings();
+            const assets = Object.keys(holdings);
+            
+            if (assets.length > 0) {
+                await fetchCryptoPrices(assets);
+            }
+
+            // Update portfolio overview
+            let totalValue = 0, totalInvested = 0, totalUnrealized = 0, totalRealized = 0;
+            
+            cryptoTransactions.forEach(tx => {
+                if (tx.type === 'buy' || tx.type === 'transfer') {
+                    totalInvested += tx.totalCost;
+                }
+            });
+
+            // Update holdings display
+            const holdingsDiv = document.getElementById('cryptoHoldings');
+            if (holdingsDiv) {
+                holdingsDiv.innerHTML = assets.map(asset => {
+                    const holding = holdings[asset];
+                    const price = cryptoPriceCache[asset]?.price || 0;
+                    const { currentValue, unrealizedPnL, percentageReturn } = calculatePnL(
+                        asset, holding.quantity, holding.costBasis, price
+                    );
+                    totalValue += currentValue;
+                    totalUnrealized += unrealizedPnL;
+
+                    const priceChange = cryptoPriceCache[asset]?.change24h || 0;
+                    const changeColor = priceChange >= 0 ? '#10b981' : '#ef4444';
+
+                    return `
+                        <div style="padding: 1rem; background: var(--bg-primary); border-radius: 8px; border-left: 4px solid ${unrealizedPnL >= 0 ? '#10b981' : '#ef4444'};">
+                            <div style="display: flex; justify-content: space-between; align-items: start;">
+                                <div>
+                                    <h5 style="margin: 0 0 0.5rem 0;">${asset}</h5>
+                                    <div style="font-size: 0.9rem; margin-bottom: 0.5rem;">
+                                        <span style="color: var(--text-secondary);">Qty:</span> ${holding.quantity.toFixed(8)}
+                                    </div>
+                                    <div style="font-size: 0.9rem; margin-bottom: 0.5rem;">
+                                        <span style="color: var(--text-secondary);">Price:</span> ${formatCrypto(price)}
+                                        <span style="color: ${changeColor}; margin-left: 0.5rem;">${priceChange >= 0 ? '↑' : '↓'} ${Math.abs(priceChange).toFixed(2)}%</span>
+                                    </div>
+                                    <div style="font-size: 0.9rem;">
+                                        <span style="color: var(--text-secondary);">Cost Basis:</span> ${formatCrypto(holding.costBasis)}
+                                    </div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="font-size: 1.3rem; font-weight: 700; margin-bottom: 0.5rem;">${formatCrypto(currentValue)}</div>
+                                    <div style="font-size: 1rem; font-weight: 700; color: ${unrealizedPnL >= 0 ? '#10b981' : '#ef4444'};">${unrealizedPnL >= 0 ? '+' : ''}${formatCrypto(unrealizedPnL)}</div>
+                                    <div style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.5rem;">${percentageReturn >= 0 ? '+' : ''}${percentageReturn.toFixed(2)}%</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            // Update portfolio metrics
+            const docUpdate = (id, value) => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = value;
+            };
+
+            docUpdate('cryptoTotalValue', formatCrypto(totalValue));
+            docUpdate('cryptoTotalInvested', formatCrypto(totalInvested));
+            docUpdate('cryptoUnrealizedPnL', formatCrypto(totalUnrealized));
+
+            // Calculate and display tax report
+            const taxReport = calculateTaxReport();
+            docUpdate('shortTermGains', formatCrypto(taxReport.shortTermGains));
+            docUpdate('longTermGains', formatCrypto(taxReport.longTermGains));
+            docUpdate('totalFeesPaid', formatCrypto(taxReport.totalFees));
+            docUpdate('cryptoRealizedPnL', formatCrypto(taxReport.shortTermGains + taxReport.longTermGains));
+            docUpdate('taxableEvents', taxReport.reportItems.length);
+
+            // Update tax breakdown
+            const taxBreakdown = document.getElementById('taxReportBreakdown');
+            if (taxBreakdown) {
+                taxBreakdown.innerHTML = taxReport.reportItems.map((item, idx) => `
+                    <div style="padding: 1rem; background: var(--bg-primary); border-radius: 8px; border-left: 4px solid ${item.gain >= 0 ? '#10b981' : '#ef4444'};">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; align-items: center;">
+                            <div>
+                                <h5 style="margin: 0 0 0.5rem 0;">${item.asset} - ${item.type === 'Long-Term' ? '📅' : '⚡'} ${item.type}</h5>
+                                <div style="font-size: 0.9rem; color: var(--text-secondary);">
+                                    Qty: ${item.quantity} | Holding: ${item.holdingDays} days<br>
+                                    Avg Buy: ${formatCrypto(item.buyPrice)} → Sell: ${formatCrypto(item.sellPrice)}
+                                </div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 1.3rem; font-weight: 700; color: ${item.gain >= 0 ? '#10b981' : '#ef4444'};">${item.gain >= 0 ? '+' : ''}${formatCrypto(item.gain)}</div>
+                                <div style="font-size: 0.9rem; color: var(--text-secondary);">${new Date(item.date).toLocaleDateString()}</div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Update transaction table
+            const filterAsset = document.getElementById('filterAsset').value.toUpperCase();
+            const txTable = document.getElementById('cryptoTxTable');
+            if (txTable) {
+                txTable.innerHTML = cryptoTransactions
+                    .filter(tx => !filterAsset || tx.asset.includes(filterAsset))
+                    .reverse()
+                    .map(tx => {
+                        const wallet = cryptoWallets.find(w => w.id == tx.walletId);
+                        const price = cryptoPriceCache[tx.asset]?.price || 0;
+                        const { currentValue, unrealizedPnL } = calculatePnL(tx.quantity, tx.quantity * tx.price, price);
+                        const displayAmount = tx.quantity * price;
+                        const displayPnL = displayAmount - tx.totalCost;
+
+                        return `
+                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                <td style="padding: 1rem;">${new Date(tx.date).toLocaleDateString()}</td>
+                                <td style="padding: 1rem;">${wallet?.name || 'Unknown'}</td>
+                                <td style="padding: 1rem;">
+                                    <span style="background: ${tx.type === 'buy' ? '#10b981' : tx.type === 'sell' ? '#ef4444' : '#f59e0b'}; color: white; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.85rem;">${tx.type.toUpperCase()}</span>
+                                </td>
+                                <td style="padding: 1rem; font-weight: 600;">${tx.asset}</td>
+                                <td style="padding: 1rem; text-align: right;">${tx.quantity.toFixed(8)}</td>
+                                <td style="padding: 1rem; text-align: right;">${formatCrypto(tx.price)}</td>
+                                <td style="padding: 1rem; text-align: right;">${formatCrypto(tx.amount)}</td>
+                                <td style="padding: 1rem; text-align: right;">${formatCrypto(tx.fee)}</td>
+                                <td style="padding: 1rem; text-align: right;">${formatCrypto(displayAmount)}</td>
+                                <td style="padding: 1rem; text-align: right; color: ${displayPnL >= 0 ? '#10b981' : '#ef4444'}; font-weight: 600;">${displayPnL >= 0 ? '+' : ''}${formatCrypto(displayPnL)}</td>
+                                <td style="padding: 1rem; text-align: center;">
+                                    <button onclick="deleteCryptoTransaction(${tx.id})" class="btn" style="background: #ef4444; padding: 0.25rem 0.75rem; font-size: 0.85rem;">🗑️</button>
+                                </td>
+                            </tr>
+                        `;
+                    }).join('');
+            }
+        }
+
+        // Export Tax Report
+        function exportTaxReport() {
+            const taxReport = calculateTaxReport();
+            const holdings = getHoldings();
+            
+            let csv = 'CRYPTO PORTFOLIO TAX REPORT\n';
+            csv += `Generated: ${new Date().toLocaleString()}\n\n`;
+            
+            csv += 'PORTFOLIO SUMMARY\n';
+            csv += 'Asset,Quantity,Cost Basis,Current Price,Current Value,Unrealized P&L\n';
+            
+            Object.entries(holdings).forEach(([asset, holding]) => {
+                const price = cryptoPriceCache[asset]?.price || 0;
+                const { currentValue, unrealizedPnL } = calculatePnL(asset, holding.quantity, holding.costBasis, price);
+                csv += `${asset},${holding.quantity.toFixed(8)},${holding.costBasis.toFixed(2)},${price.toFixed(2)},${currentValue.toFixed(2)},${unrealizedPnL.toFixed(2)}\n`;
+            });
+
+            csv += '\n\nCAPITAL GAINS\n';
+            csv += 'Asset,Type,Quantity,Buy Price,Sell Price,Gain,Holding Days,Sale Date\n';
+            taxReport.reportItems.forEach(item => {
+                csv += `${item.asset},${item.type},${item.quantity},${item.buyPrice},${item.sellPrice},${item.gain.toFixed(2)},${item.holdingDays},${item.date}\n`;
+            });
+
+            csv += '\n\nTAX SUMMARY\n';
+            csv += `Short-Term Gains,${taxReport.shortTermGains.toFixed(2)}\n`;
+            csv += `Long-Term Gains,${taxReport.longTermGains.toFixed(2)}\n`;
+            csv += `Total Fees,${taxReport.totalFees.toFixed(2)}\n`;
+            csv += `Total Taxable Events,${taxReport.reportItems.length}\n`;
+
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Crypto_Tax_Report_${new Date().getTime()}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        }
+
+        // Event Listeners for Crypto
+        document.getElementById('addWallet')?.addEventListener('click', addWallet);
+        document.getElementById('addCryptoTx')?.addEventListener('click', addCryptoTransaction);
+        document.getElementById('syncWallets')?.addEventListener('click', syncWallets);
+        document.getElementById('exportTaxReport')?.addEventListener('click', exportTaxReport);
+        document.getElementById('filterAsset')?.addEventListener('input', updateCryptoUI);
+
+        // Initialize crypto UI
+        updateCryptoUI();
     </script>
 </body>
 </html>

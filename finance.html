@@ -356,6 +356,8 @@
             <button class="tab-btn" data-tab="transactions">Transactions</button>
             <button class="tab-btn" data-tab="budget">Budget</button>
             <button class="tab-btn" data-tab="recurring">Recurring</button>
+            <button class="tab-btn" data-tab="goals">Goals</button>
+            <button class="tab-btn" data-tab="investments">Investments</button>
             <button class="tab-btn" data-tab="reports">Reports</button>
         </div>
 
@@ -593,6 +595,141 @@
                 <h3>Monthly Summary</h3>
                 <div class="chart-container" id="monthlySummary"></div>
             </div>
+
+            <div class="card" style="margin-top: 2rem;">
+                <h3>Financial Health Score</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+                    <div style="text-align: center;">
+                        <div id="healthScore" style="font-size: 3rem; font-weight: 700; color: #10b981; margin-bottom: 0.5rem;">0%</div>
+                        <div style="color: var(--text-secondary);">Overall Health</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div id="savingsRate" style="font-size: 3rem; font-weight: 700; color: #3b82f6; margin-bottom: 0.5rem;">0%</div>
+                        <div style="color: var(--text-secondary);">Savings Rate</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div id="expenseRatio" style="font-size: 3rem; font-weight: 700; color: #f59e0b; margin-bottom: 0.5rem;">0%</div>
+                        <div style="color: var(--text-secondary);">Expense Ratio</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Goals Section -->
+        <section id="goals" class="section">
+            <div class="finance-container">
+                <div class="card">
+                    <h3>Create Savings Goal</h3>
+                    <form id="goalForm">
+                        <div class="form-group">
+                            <label for="goalName">Goal Name</label>
+                            <input type="text" id="goalName" placeholder="e.g., Vacation, Car, House" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="goalAmount">Target Amount</label>
+                            <input type="number" id="goalAmount" placeholder="10000.00" step="0.01" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="goalDeadline">Target Date</label>
+                            <input type="date" id="goalDeadline" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="goalCategory">Category</label>
+                            <select id="goalCategory">
+                                <option value="travel">Travel</option>
+                                <option value="vehicle">Vehicle</option>
+                                <option value="home">Home</option>
+                                <option value="education">Education</option>
+                                <option value="retirement">Retirement</option>
+                                <option value="emergency">Emergency Fund</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn">Create Goal</button>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <h3>Active Goals</h3>
+                    <div id="goalsList"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Investments Section -->
+        <section id="investments" class="section">
+            <div class="finance-container">
+                <div class="card">
+                    <h3>Add Investment</h3>
+                    <form id="investmentForm">
+                        <div class="form-group">
+                            <label for="investmentName">Investment Name</label>
+                            <input type="text" id="investmentName" placeholder="e.g., Apple Stock, ETF Fund" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="investmentAmount">Initial Amount</label>
+                            <input type="number" id="investmentAmount" placeholder="5000.00" step="0.01" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="investmentType">Type</label>
+                            <select id="investmentType" required>
+                                <option value="stock">Stock</option>
+                                <option value="bond">Bond</option>
+                                <option value="etf">ETF</option>
+                                <option value="crypto">Cryptocurrency</option>
+                                <option value="mutual">Mutual Fund</option>
+                                <option value="real-estate">Real Estate</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="investmentDate">Purchase Date</label>
+                            <input type="date" id="investmentDate" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="currentValue">Current Value (Optional)</label>
+                            <input type="number" id="currentValue" placeholder="5500.00" step="0.01">
+                        </div>
+
+                        <button type="submit" class="btn">Add Investment</button>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <h3>Investment Portfolio</h3>
+                    <div id="investmentsList"></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Portfolio Summary</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+                    <div style="padding: 1rem; background: var(--bg-primary); border-radius: 8px;">
+                        <div style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.5rem;">Total Invested</div>
+                        <div style="font-size: 1.8rem; font-weight: 700;" id="totalInvested">$0.00</div>
+                    </div>
+                    <div style="padding: 1rem; background: var(--bg-primary); border-radius: 8px;">
+                        <div style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.5rem;">Current Value</div>
+                        <div style="font-size: 1.8rem; font-weight: 700;" id="totalCurrentValue">$0.00</div>
+                    </div>
+                    <div style="padding: 1rem; background: var(--bg-primary); border-radius: 8px;">
+                        <div style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.5rem;">Gain/Loss</div>
+                        <div style="font-size: 1.8rem; font-weight: 700;" id="gainLoss">$0.00</div>
+                    </div>
+                    <div style="padding: 1rem; background: var(--bg-primary); border-radius: 8px;">
+                        <div style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.5rem;">Return %</div>
+                        <div style="font-size: 1.8rem; font-weight: 700;" id="returnPercentage">0%</div>
+                    </div>
+                </div>
+            </div>
         </section>
     </main>
 
@@ -655,6 +792,8 @@
         let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
         let budgets = JSON.parse(localStorage.getItem('budgets')) || [];
         let recurringTransactions = JSON.parse(localStorage.getItem('recurringTransactions')) || [];
+        let goals = JSON.parse(localStorage.getItem('goals')) || [];
+        let investments = JSON.parse(localStorage.getItem('investments')) || [];
 
         const form = document.getElementById('transactionForm');
         const descriptionInput = document.getElementById('description');
@@ -726,6 +865,46 @@
             updateUI();
         });
 
+        // Goals Form
+        document.getElementById('goalForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const goal = {
+                id: Date.now(),
+                name: document.getElementById('goalName').value,
+                targetAmount: parseFloat(document.getElementById('goalAmount').value),
+                deadline: document.getElementById('goalDeadline').value,
+                category: document.getElementById('goalCategory').value,
+                createdDate: new Date().toISOString().split('T')[0],
+                active: true
+            };
+
+            goals.push(goal);
+            localStorage.setItem('goals', JSON.stringify(goals));
+            document.getElementById('goalForm').reset();
+            document.getElementById('goalDeadline').valueAsDate = new Date();
+            updateUI();
+        });
+
+        // Investments Form
+        document.getElementById('investmentForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const investment = {
+                id: Date.now(),
+                name: document.getElementById('investmentName').value,
+                initialAmount: parseFloat(document.getElementById('investmentAmount').value),
+                currentValue: parseFloat(document.getElementById('currentValue').value) || parseFloat(document.getElementById('investmentAmount').value),
+                type: document.getElementById('investmentType').value,
+                purchaseDate: document.getElementById('investmentDate').value,
+                active: true
+            };
+
+            investments.push(investment);
+            localStorage.setItem('investments', JSON.stringify(investments));
+            document.getElementById('investmentForm').reset();
+            document.getElementById('investmentDate').valueAsDate = new Date();
+            updateUI();
+        });
+
         function updateUI() {
             updateStats();
             updateTransactionList();
@@ -733,6 +912,8 @@
             updateReports();
             updateBudgetList();
             updateRecurringList();
+            updateGoalsList();
+            updateInvestmentsList();
             applyRecurringTransactions();
         }
 
@@ -889,6 +1070,99 @@
             `).join('');
         }
 
+        function updateGoalsList() {
+            const list = document.getElementById('goalsList');
+
+            if (goals.length === 0) {
+                list.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🎯</div>
+                        <p>No savings goals yet.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            list.innerHTML = goals.filter(g => g.active).map(goal => {
+                const progress = (goal.targetAmount > 0 ? (goal.targetAmount / goal.targetAmount) * 100 : 0);
+                const daysLeft = Math.max(0, Math.ceil((new Date(goal.deadline) - new Date()) / (1000 * 60 * 60 * 24)));
+                const isCompleted = goal.targetAmount <= goal.targetAmount;
+
+                return `
+                    <div style="margin-bottom: 1.5rem; padding: 1rem; background: var(--bg-primary); border-radius: 8px; border-left: 4px solid ${isCompleted ? '#10b981' : '#3b82f6'};">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <div>
+                                <div style="font-weight: 600;">${goal.name}</div>
+                                <div style="font-size: 0.875rem; color: var(--text-secondary);">${goal.category} • ${daysLeft} days left</div>
+                            </div>
+                            <button class="delete-btn" onclick="deleteGoal(${goal.id})">Delete</button>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.875rem;">
+                            <span>$${goal.targetAmount.toFixed(2)} goal</span>
+                            <span>${Math.min(100, 100).toFixed(1)}%</span>
+                        </div>
+                        <div style="height: 8px; background: var(--border-color); border-radius: 4px; overflow: hidden;">
+                            <div style="height: 100%; width: 100%; background: linear-gradient(90deg, #10b981, #059669);"></div>
+                        </div>
+                        <div style="font-size: 0.875rem; margin-top: 0.5rem; color: var(--text-secondary);">
+                            ${isCompleted ? '✅ Goal reached!' : `Target: $${goal.targetAmount.toFixed(2)}`}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateInvestmentsList() {
+            const list = document.getElementById('investmentsList');
+
+            if (investments.length === 0) {
+                list.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📈</div>
+                        <p>No investments yet.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            list.innerHTML = investments.filter(i => i.active).map(inv => {
+                const gain = inv.currentValue - inv.initialAmount;
+                const gainPercent = inv.initialAmount > 0 ? ((gain / inv.initialAmount) * 100).toFixed(2) : 0;
+                const gainColor = gain >= 0 ? '#10b981' : '#ef4444';
+
+                return `
+                    <div style="margin-bottom: 1rem; padding: 1rem; background: var(--bg-primary); border-radius: 8px; border-left: 4px solid ${gainColor};">
+                        <div style="display: flex; justify-content: space-between; align-items: start;">
+                            <div style="flex: 1;">
+                                <div style="font-weight: 600;">${inv.name}</div>
+                                <div style="font-size: 0.875rem; color: var(--text-secondary);">${inv.type} • Since ${new Date(inv.purchaseDate).toLocaleDateString()}</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-weight: 600; color: ${gainColor};">
+                                    ${gain >= 0 ? '+' : ''}$${gain.toFixed(2)} (${gainPercent}%)
+                                </div>
+                                <div style="font-size: 0.875rem; color: var(--text-secondary);">$${inv.currentValue.toFixed(2)}</div>
+                            </div>
+                        </div>
+                        <button class="delete-btn" onclick="deleteInvestment(${inv.id})" style="margin-top: 0.5rem;">Remove</button>
+                    </div>
+                `;
+            }).join('');
+
+            // Update portfolio summary
+            const totalInvested = investments.filter(i => i.active).reduce((sum, i) => sum + i.initialAmount, 0);
+            const totalCurrentValue = investments.filter(i => i.active).reduce((sum, i) => sum + i.currentValue, 0);
+            const totalGain = totalCurrentValue - totalInvested;
+            const returnPercent = totalInvested > 0 ? ((totalGain / totalInvested) * 100).toFixed(2) : 0;
+
+            document.getElementById('totalInvested').textContent = `$${totalInvested.toFixed(2)}`;
+            document.getElementById('totalCurrentValue').textContent = `$${totalCurrentValue.toFixed(2)}`;
+            document.getElementById('gainLoss').textContent = `${totalGain >= 0 ? '+' : ''}$${totalGain.toFixed(2)}`;
+            document.getElementById('gainLoss').style.color = totalGain >= 0 ? '#10b981' : '#ef4444';
+            document.getElementById('returnPercentage').textContent = `${returnPercent}%`;
+            document.getElementById('returnPercentage').style.color = returnPercent >= 0 ? '#10b981' : '#ef4444';
+        }
+
         function applyRecurringTransactions() {
             const today = new Date();
             recurringTransactions.forEach(recurring => {
@@ -937,6 +1211,49 @@
         function updateReports() {
             updateCategoryStats();
             updateMonthlySummary();
+            updateFinancialHealthScore();
+        }
+
+        function updateFinancialHealthScore() {
+            const totalIncome = transactions
+                .filter(t => t.type === 'income')
+                .reduce((sum, t) => sum + t.amount, 0);
+
+            const totalExpenses = transactions
+                .filter(t => t.type === 'expense')
+                .reduce((sum, t) => sum + t.amount, 0);
+
+            // Savings Rate: (Income - Expenses) / Income * 100
+            const savingsRate = totalIncome > 0 ? ((totalIncome - totalExpenses) / totalIncome * 100) : 0;
+            
+            // Expense Ratio: Expenses / Income * 100
+            const expenseRatio = totalIncome > 0 ? ((totalExpenses / totalIncome) * 100) : 0;
+            
+            // Health Score: Based on savings rate and budget adherence
+            let healthScore = 50;
+            if (savingsRate >= 20) healthScore += 30;
+            else if (savingsRate >= 10) healthScore += 20;
+            else if (savingsRate >= 0) healthScore += 10;
+
+            const budgetAdherence = budgets.reduce((acc, budget) => {
+                const spent = transactions
+                    .filter(t => t.type === 'expense' && t.category === budget.category && isCurrentMonth(t.date))
+                    .reduce((sum, t) => sum + t.amount, 0);
+                const percentage = (spent / budget.amount) * 100;
+                return acc + (percentage <= 100 ? 20 : 0);
+            }, 0) / Math.max(budgets.length, 1);
+
+            healthScore += budgetAdherence;
+            healthScore = Math.min(100, Math.max(0, healthScore));
+
+            // Update display
+            const healthScoreEl = document.getElementById('healthScore');
+            const savingsRateEl = document.getElementById('savingsRate');
+            const expenseRatioEl = document.getElementById('expenseRatio');
+
+            if (healthScoreEl) healthScoreEl.textContent = `${Math.round(healthScore)}%`;
+            if (savingsRateEl) savingsRateEl.textContent = `${Math.min(100, savingsRate).toFixed(1)}%`;
+            if (expenseRatioEl) expenseRatioEl.textContent = `${Math.min(100, expenseRatio).toFixed(1)}%`;
         }
 
         function updateCategoryStats() {
@@ -1037,6 +1354,24 @@
                 recurring.active = false;
             }
             localStorage.setItem('recurringTransactions', JSON.stringify(recurringTransactions));
+            updateUI();
+        }
+
+        function deleteGoal(id) {
+            const goal = goals.find(g => g.id === id);
+            if (goal) {
+                goal.active = false;
+            }
+            localStorage.setItem('goals', JSON.stringify(goals));
+            updateUI();
+        }
+
+        function deleteInvestment(id) {
+            const investment = investments.find(i => i.id === id);
+            if (investment) {
+                investment.active = false;
+            }
+            localStorage.setItem('investments', JSON.stringify(investments));
             updateUI();
         }
 

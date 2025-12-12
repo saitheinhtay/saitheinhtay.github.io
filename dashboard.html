@@ -1,164 +1,425 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Overview</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
 
-    <title>mrsaitheinhtay</title>
+        .dashboard-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 250px;
+        }
 
-    <!-- Fonts -->
-    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border-color: var(--primary-color);
+        }
 
-    <!-- MDB CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css" rel="stylesheet" />
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
 
-    <!-- Font Awesome (for icons) -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
 
+        .card-description {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            flex: 1;
+        }
 
+        .card-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
 
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            margin-top: 0.5rem;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .quick-action-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-hover));
+            color: white;
+            padding: 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .quick-action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: var(--text-primary);
+        }
+
+        .overview-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .overview-stat-box {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .overview-stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .overview-stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .footer-note {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+    </style>
 </head>
-<body class="bg-secondary bg-gradient">
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="{{ url('/') }}">
-                mrsaitheinhtay
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <a href="index.html">Portfolio</a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="dashboard.html" class="nav-link active">Dashboard</a></li>
+                <li><a href="finance.html" class="nav-link">Finance</a></li>
+                <li><a href="login.html" class="nav-link">Login</a></li>
+            </ul>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                <span class="theme-icon">🌙</span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="index.html">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/blogs.html">Blog</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/finance.html">Finance</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/cashflow.html">CashFlow</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/fun.html">testpage</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="">Profile</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Dropdown
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-                    </li>
-                </ul>
-
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
-                <!-- Right Side Of Navbar -->
-
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
         </div>
     </nav>
 
-    <main class="py-4">
-        <div class="container-fluid">
-            <div class="row justify-content-center ">
-                
+    <!-- Main Content -->
+    <main class="container" style="padding: 6rem 2rem 2rem;">
+        <h1 style="margin-bottom: 0.5rem;">Dashboard</h1>
+        <p style="color: var(--text-secondary); margin-bottom: 2rem;">Overview of your financial tools and applications.</p>
+
+        <!-- Overview Stats -->
+        <div class="overview-stats">
+            <div class="overview-stat-box">
+                <div class="overview-stat-label">📊 Total Modules</div>
+                <div class="overview-stat-value">4</div>
             </div>
+            <div class="overview-stat-box">
+                <div class="overview-stat-label">💰 Finance Tools</div>
+                <div class="overview-stat-value">5+</div>
+            </div>
+            <div class="overview-stat-box">
+                <div class="overview-stat-label">📈 Data Stored</div>
+                <div class="overview-stat-value" id="dataStoredStats">Loading...</div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <h2 class="section-title">Quick Actions</h2>
+        <div class="quick-actions">
+            <a href="finance.html" class="quick-action-btn">
+                <span>💰</span> Go to Finance
+            </a>
+            <a href="finance.html#transactions" class="quick-action-btn">
+                <span>📋</span> View Transactions
+            </a>
+            <a href="finance.html#budget" class="quick-action-btn">
+                <span>🎯</span> Set Budget
+            </a>
+            <a href="finance.html#reports" class="quick-action-btn">
+                <span>📊</span> View Reports
+            </a>
+        </div>
+
+        <!-- Application Cards -->
+        <h2 class="section-title">Applications</h2>
+        <div class="dashboard-grid">
+            <!-- Finance Manager Card -->
+            <a href="finance.html" class="dashboard-card">
+                <div>
+                    <div class="card-icon">💰</div>
+                    <div class="card-title">Finance Manager</div>
+                    <div class="card-description">
+                        Track your income, expenses, set budgets, and manage recurring transactions with detailed reports.
+                    </div>
+                </div>
+                <div class="card-stats">
+                    <div class="stat">
+                        <div class="stat-value" id="transactionCount">0</div>
+                        <div class="stat-label">Transactions</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="budgetCount">0</div>
+                        <div class="stat-label">Budgets</div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Income Tracker Card -->
+            <a href="finance.html?tab=dashboard" class="dashboard-card">
+                <div>
+                    <div class="card-icon">📈</div>
+                    <div class="card-title">Income Tracker</div>
+                    <div class="card-description">
+                        Monitor all income sources including salary, bonuses, and other revenue streams.
+                    </div>
+                </div>
+                <div class="card-stats">
+                    <div class="stat">
+                        <div class="stat-value" id="totalIncomeDisplay">$0</div>
+                        <div class="stat-label">Total Income</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="incomeTransCount">0</div>
+                        <div class="stat-label">Entries</div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Expense Manager Card -->
+            <a href="finance.html?tab=dashboard" class="dashboard-card">
+                <div>
+                    <div class="card-icon">💸</div>
+                    <div class="card-title">Expense Manager</div>
+                    <div class="card-description">
+                        Control spending with budget alerts and expense categorization across multiple categories.
+                    </div>
+                </div>
+                <div class="card-stats">
+                    <div class="stat">
+                        <div class="stat-value" id="totalExpenseDisplay">$0</div>
+                        <div class="stat-label">Total Expenses</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="expenseTransCount">0</div>
+                        <div class="stat-label">Entries</div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Reports & Analytics Card -->
+            <a href="finance.html#reports" class="dashboard-card">
+                <div>
+                    <div class="card-icon">📊</div>
+                    <div class="card-title">Reports & Analytics</div>
+                    <div class="card-description">
+                        View comprehensive financial reports with monthly summaries and category breakdowns.
+                    </div>
+                </div>
+                <div class="card-stats">
+                    <div class="stat">
+                        <div class="stat-value" id="balanceDisplay">$0</div>
+                        <div class="stat-label">Balance</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="monthCount">0</div>
+                        <div class="stat-label">Months Data</div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Features Section -->
+        <h2 class="section-title">Key Features</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 3rem;">
+            <div style="padding: 1.5rem; background: var(--bg-secondary); border-radius: 8px; border: 1px solid var(--border-color);">
+                <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">✅ Transaction Tracking</div>
+                <p style="color: var(--text-secondary); font-size: 0.95rem;">Add, edit, and delete transactions with full details and categories.</p>
+            </div>
+            <div style="padding: 1.5rem; background: var(--bg-secondary); border-radius: 8px; border: 1px solid var(--border-color);">
+                <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🎯 Budget Management</div>
+                <p style="color: var(--text-secondary); font-size: 0.95rem;">Set monthly budgets per category with visual progress indicators.</p>
+            </div>
+            <div style="padding: 1.5rem; background: var(--bg-secondary); border-radius: 8px; border: 1px solid var(--border-color);">
+                <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🔄 Recurring Transactions</div>
+                <p style="color: var(--text-secondary); font-size: 0.95rem;">Automate recurring income and expenses with flexible schedules.</p>
+            </div>
+            <div style="padding: 1.5rem; background: var(--bg-secondary); border-radius: 8px; border: 1px solid var(--border-color);">
+                <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">📊 Visual Reports</div>
+                <p style="color: var(--text-secondary); font-size: 0.95rem;">Monthly summaries, category breakdowns, and income vs expense charts.</p>
+            </div>
+            <div style="padding: 1.5rem; background: var(--bg-secondary); border-radius: 8px; border: 1px solid var(--border-color);">
+                <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">📥 Data Export</div>
+                <p style="color: var(--text-secondary); font-size: 0.95rem;">Export transactions to CSV and PDF for analysis and sharing.</p>
+            </div>
+            <div style="padding: 1.5rem; background: var(--bg-secondary); border-radius: 8px; border: 1px solid var(--border-color);">
+                <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">💾 Local Storage</div>
+                <p style="color: var(--text-secondary); font-size: 0.95rem;">All data saved locally in your browser - no external servers required.</p>
+            </div>
+        </div>
+
+        <div class="footer-note">
+            <p>Last updated: <span id="lastUpdate">Today</span> | Data is stored securely in your browser's local storage</p>
         </div>
     </main>
 
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('.theme-icon');
+        const html = document.documentElement;
 
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+        html.setAttribute('data-theme', currentTheme);
+        updateThemeIcon(currentTheme);
 
-    <!-- Footer -->
-    <footer class="bg-gray text-light ">
-        <div class="container-fluid text-md-left">
-            <div class="row text-md-left">
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
 
-                <!-- Column 1: Company -->
-                <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
-                    <h5 class="text-uppercase mb-4 font-weight-bold text-black">Sai Thein Htay</h5>
-                    <p>
-                        A brief description of your company or tagline. It should be 2-3 lines long for best
-                        readability.
-                    </p>
-                </div>
+        function updateThemeIcon(theme) {
+            themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
+        }
 
-                <!-- Column 2: Products -->
-                <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
-                    <h5 class="text-uppercase mb-4 font-weight-bold text-black">Products</h5>
-                    <p><a href="#" class="text-light text-decoration-none">Angular</a></p>
-                    <p><a href="#" class="text-light text-decoration-none">React</a></p>
-                    <p><a href="#" class="text-light text-decoration-none">Vue</a></p>
-                    <p><a href="#" class="text-light text-decoration-none">Laravel</a></p>
-                </div>
+        // Mobile Menu Toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+        const navLinks = document.querySelectorAll('.nav-link');
 
-                <!-- Column 3: Useful Links -->
-                <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
-                    <h5 class="text-uppercase mb-4 font-weight-bold text-black">Useful links</h5>
-                    <p><a href="#" class="text-light text-decoration-none">Pricing</a></p>
-                    <p><a href="#" class="text-light text-decoration-none">Settings</a></p>
-                    <p><a href="#" class="text-light text-decoration-none">Orders</a></p>
-                    <p><a href="#" class="text-light text-decoration-none">Help</a></p>
-                </div>
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
 
-                <!-- Column 4: Contact -->
-                <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
-                    <h5 class="text-uppercase mb-4 font-weight-bold text-black">Contact</h5>
-                    <p><i class="fas fa-home mr-3"></i> New York, NY 10012, US</p>
-                    <p><i class="fas fa-envelope mr-3"></i> info@example.com</p>
-                    <p><i class="fas fa-phone mr-3"></i> +01 234 567 88</p>
-                    <p><i class="fas fa-print mr-3"></i> +01 234 567 89</p>
-                </div>
-            </div>
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
 
-            <!-- Social Media Row -->
-            <hr class="mb-4" />
-            <div class="row align-items-center">
-                <div class="col-md-7 col-lg-8">
-                    <p>© 2025 Copyright:
-                        <a href="#" class="text-black text-decoration-none"><strong>saitheinhtay.com</strong></a>
-                    </p>
-                </div>
-                <div class="col-md-5 col-lg-4">
-                    <div class="text-center text-md-right">
-                        <a class="btn btn-outline-light btn-floating m-1" href=""><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-outline-light btn-floating m-1" href="#"><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-outline-light btn-floating m-1" href="#"><i class="fab fa-google"></i></a>
-                        <a class="btn btn-outline-light btn-floating m-1" href="#"><i class="fab fa-instagram"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
+        // Dashboard Stats
+        function updateDashboardStats() {
+            const transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+            const budgets = JSON.parse(localStorage.getItem('budgets')) || [];
+            const recurring = JSON.parse(localStorage.getItem('recurringTransactions')) || [];
 
-    <!-- Footer -->
+            // Transaction counts
+            document.getElementById('transactionCount').textContent = transactions.length;
+            document.getElementById('budgetCount').textContent = budgets.length;
 
+            // Income/Expense
+            const totalIncome = transactions
+                .filter(t => t.type === 'income')
+                .reduce((sum, t) => sum + t.amount, 0);
+            const totalExpense = transactions
+                .filter(t => t.type === 'expense')
+                .reduce((sum, t) => sum + t.amount, 0);
 
-    <!-- MDB  in body -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"></script>
+            document.getElementById('totalIncomeDisplay').textContent = `$${totalIncome.toFixed(2)}`;
+            document.getElementById('totalExpenseDisplay').textContent = `$${totalExpense.toFixed(2)}`;
+            document.getElementById('balanceDisplay').textContent = `$${(totalIncome - totalExpense).toFixed(2)}`;
 
+            // Counts
+            document.getElementById('incomeTransCount').textContent = transactions.filter(t => t.type === 'income').length;
+            document.getElementById('expenseTransCount').textContent = transactions.filter(t => t.type === 'expense').length;
 
+            // Monthly data
+            const months = new Set();
+            transactions.forEach(t => {
+                const date = new Date(t.date);
+                months.add(`${date.getFullYear()}-${date.getMonth()}`);
+            });
+            document.getElementById('monthCount').textContent = months.size;
+
+            // Data stored
+            const totalData = JSON.stringify(localStorage).length;
+            document.getElementById('dataStoredStats').textContent = `${(totalData / 1024).toFixed(1)} KB`;
+
+            // Last update
+            const lastUpdate = localStorage.getItem('lastUpdate') || new Date().toLocaleDateString();
+            document.getElementById('lastUpdate').textContent = lastUpdate;
+        }
+
+        // Update on load and when storage changes
+        updateDashboardStats();
+        window.addEventListener('storage', updateDashboardStats);
+    </script>
 </body>
-
 </html>
